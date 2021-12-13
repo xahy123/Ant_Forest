@@ -1,6 +1,6 @@
 init();
 main();
-
+// 立即执行
 function init() {
   setScreenMetrics(1080, 2400);
 
@@ -31,7 +31,7 @@ function main() {
     exit();
   }
 
-  sleep(1500)
+  sleep(2500)
   energyHarvester()
 }
 
@@ -47,19 +47,27 @@ function energyHarvester() {
     })
     errorCount++
     if (point) {
-      console.log("找到红色，坐标为(" + point.x + ", " + point.y + ")");
+      // console.log("找到能量，坐标为(" + point.x + ", " + point.y + ")");
       click(point.x, point.y);
     }
     
-    if (text('返回蚂蚁森林 >')) {
+    if (textStartsWith('返回蚂蚁森林').exists()) {
       toast('收完了');
       home()
       exit()
     }
 
-    // 每个人的主页暂时定义是30次
-    if (errorCount > 30) {
-      // toast('点击超过30次了，该去下一个人了');
+    if(text('沙柳皮肤').exists()) {
+      toast('沙柳和能量无法识别，下一个')
+      delay(0.2)
+      click(537, 1990)
+      findEnergy()
+      break;
+    }
+
+    // 每个人的主页暂时定义是40次
+    if (errorCount > 40) {
+      // toast('点击超过40次了，该去下一个人了');
       findEnergy()
       break;
     }
@@ -79,21 +87,12 @@ function findEnergy() {
     });
     if (btnPoint) {
       click(btnPoint.x, btnPoint.y);
+      // 随机停顿
+      delay(random(0.1, 0.3));
       energyHarvester()
       break
     }
-    // 随机停顿--真人模拟
-    // delay(5);
   }
-}
-
-//↓↓↓ 下面是一些工具人方法 用来获取控件、点击、延时之类的
-function findViewByClassAndId(name, viewId) {
-  return className(name).id(viewId).findOne(1000);
-}
-
-function findViewByClassAndText(name, s) {
-  return className(name).text(s).findOne(1000);
 }
 
 function delay(seconds) {

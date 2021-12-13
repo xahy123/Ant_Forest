@@ -1,11 +1,55 @@
-init();
-main();
+setScreenMetrics(1080, 2400);
+// 请求无障碍
+auto.waitFor();
+
+
+// 定时脚本 6:20执行
+toast('开始了')
+var timeCurrent = 0;
+var times = [
+  [6, 20],
+  [7, 20],
+  [8, 20],
+]
+timing();
+
+
+function timing() {
+  if (timeCurrent > 2) {
+    toast('今日任务已完成，3次');
+    delay(random(2, 4));
+    exit()
+  }
+  let [h, m] = times[timeCurrent]
+  while (true) {
+    var myDate = new Date();
+    // console.log(myDate.getHours(), myDate.getMinutes());
+    if (myDate.getHours() >= h && myDate.getMinutes() >= m) {
+      // 判断屏幕是否亮着
+      if (!device.isScreenOn()) {
+        device.wakeUpIfNeeded()
+        gestures([350, [300, 1400], [300, 400]])
+        desc('1').click()
+        delay(random(0.1, 0.3));
+        desc('5').click()
+        delay(random(0.1, 0.3));
+        desc('2').click()
+        delay(random(0.1, 0.3));
+        desc('0').click()
+        delay(random(0.1, 0.3));
+      }
+      timeCurrent++;
+      init();
+      main();
+      break;
+    }
+    // sleep(60000);
+    sleep(1000);
+  }
+}
 
 function init() {
-  setScreenMetrics(1080, 2400);
-
-  // 请求无障碍
-  auto.waitFor();
+  
   threads.start(function () {
     let startBtn = textContains('立即开始').findOne(2000);
     sleep(500)
@@ -31,13 +75,12 @@ function main() {
     exit();
   }
 
-  sleep(1500)
+  sleep(2500)
   energyHarvester()
 }
 
 
 function energyHarvester() {
-  // toast(('开始了'));
   var image, point, errorCount = 0;
   while (true) {
     image = images.captureScreen();
@@ -47,19 +90,36 @@ function energyHarvester() {
     })
     errorCount++
     if (point) {
-      console.log("找到红色，坐标为(" + point.x + ", " + point.y + ")");
+      // console.log("找到能量，坐标为(" + point.x + ", " + point.y + ")");
       click(point.x, point.y);
     }
-    
-    if (text('返回蚂蚁森林 >')) {
+
+    if (textStartsWith('返回蚂蚁森林').exists()) {
+      delay(random(1, 3))
       toast('收完了');
+      delay(random(1, 3))
+      back()
+      delay(random(1, 3))
+      back()
+      delay(random(1, 3))
+      back()
+      delay(random(1, 3))
       home()
-      exit()
+      timing()
+      // exit()
     }
 
-    // 每个人的主页暂时定义是30次
-    if (errorCount > 30) {
-      // toast('点击超过30次了，该去下一个人了');
+    if(text('沙柳皮肤').exists()) {
+      toast('沙柳和能量无法识别，下一个')
+      delay(0.2)
+      click(537, 1990)
+      findEnergy()
+      break;
+    }
+
+    // 每个人的主页暂时定义是40次
+    if (errorCount > 40) {
+      // toast('点击超过40次了，该去下一个人了');
       findEnergy()
       break;
     }
@@ -79,22 +139,15 @@ function findEnergy() {
     });
     if (btnPoint) {
       click(btnPoint.x, btnPoint.y);
+      // 随机停顿
+      delay(random(0.1, 0.3));
       energyHarvester()
       break
     }
-    // 随机停顿--真人模拟
-    // delay(5);
+    
   }
 }
 
-//↓↓↓ 下面是一些工具人方法 用来获取控件、点击、延时之类的
-function findViewByClassAndId(name, viewId) {
-  return className(name).id(viewId).findOne(1000);
-}
-
-function findViewByClassAndText(name, s) {
-  return className(name).text(s).findOne(1000);
-}
 
 function delay(seconds) {
   sleep(1000 * seconds);
