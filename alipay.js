@@ -2,20 +2,21 @@ setScreenMetrics(1080, 2400);
 // 请求无障碍
 auto.waitFor();
 
-
 // 定时脚本 6:20执行
 toast('开始了')
+init();
 var timeCurrent = 0;
 var times = [
-  [6, 20],
-  [7, 20],
-  [8, 20],
+  [0, 0],
+  [19, 35],
+  [19, 45],
+  [19, 55],
 ]
 timing();
 
 
 function timing() {
-  if (timeCurrent > 2) {
+  if (timeCurrent > 3) {
     toast('今日任务已完成，3次');
     delay(random(2, 4));
     exit()
@@ -39,11 +40,11 @@ function timing() {
         delay(random(0.1, 0.3));
       }
       timeCurrent++;
-      init();
+      
+      sleep(3000)
       main();
       break;
     }
-    // sleep(60000);
     sleep(1000);
   }
 }
@@ -68,7 +69,7 @@ function init() {
 function main() {
   launchApp('支付宝');
   // 每个手机打开的速度不一样，等待1.5s
-  sleep(1500);
+  sleep(3500);
 
   if (!click('蚂蚁森林', 0)) {
     toast("未检查到蚂蚁森林按钮, 请将蚂蚁森林添加到首页展示");
