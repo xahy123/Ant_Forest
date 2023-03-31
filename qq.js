@@ -7,7 +7,7 @@ threads.start(function () {
     startBtn.click()
   }
 })
-// //请求截图
+//请求截图
 if (!requestScreenCapture()) {
   toast("请求截图失败");
   exit();
