@@ -4,5 +4,6 @@ function wait(str) {
     sleep(1000)
     text(str).click()
   }
+  console.log('1');
 
 }
