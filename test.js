@@ -5,5 +5,6 @@ function wait(str) {
     text(str).click()
   }
   console.log('1');
+  console.log(2);
 
 }
