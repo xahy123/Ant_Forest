@@ -7,5 +7,6 @@ function wait(str) {
   // 主分支
   console.log(1);
   console.log(2);
+  console.log(3);
 
 }
