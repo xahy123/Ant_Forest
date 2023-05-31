@@ -4,6 +4,7 @@ function wait(str) {
     sleep(2000)
     text(str).click()
   }
-  console.log(123);
+  // 主分支
+  console.log(1);
 
 }
