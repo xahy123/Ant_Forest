@@ -4,10 +4,7 @@ function wait(str) {
     sleep(2000)
     text(str).click()
   }
-  // 主分支
-  console.log(1);
-  console.log(2);
-  console.log(3);
-  console.log(4);
+  // dev
+  console.log(1, 'devasd');
 
 }
